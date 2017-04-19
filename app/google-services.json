@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "546046088402",
+    "firebase_url": "https://tweetags-512a8.firebaseio.com",
+    "project_id": "tweetags-512a8",
+    "storage_bucket": "tweetags-512a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:546046088402:android:cf89f61a9c7ac349",
+        "android_client_info": {
+          "package_name": "com.plutos_seup.tweetags"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "546046088402-v6c80541rplrcvpngc3gd0vhhlrje5s6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlG9bkUMra2UQU8nrussSfPUaaV34JtX4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
