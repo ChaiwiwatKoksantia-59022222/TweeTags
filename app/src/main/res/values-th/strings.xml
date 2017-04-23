@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TweeTags</string>
+    <string name="action_settings">การตั้งค่า</string>
+    <string name="action_add">เพิ่ม</string>
+</resources>

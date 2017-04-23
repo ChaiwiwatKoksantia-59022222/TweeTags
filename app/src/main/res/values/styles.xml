@@ -13,6 +13,63 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="elevation">0dp</item>
+
+    </style>
+
+    <style name="ActionBar_test" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="colorPrimary">@color/twitterDark_Light</item>
+        <item name="colorPrimaryDark">@color/twitterDark_Dark</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="elevation">0dp</item>
+
+    </style>
+
+    <style name="Login" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="elevation">0dp</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+
+    </style>
+
+    <style name="Splash" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="elevation">0dp</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+
+    </style>
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="Login_input" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorPrimary">@color/login_white</item>
+        <item name="colorControlNormal">@color/login_white</item>
+        <item name="android:textColorHint">@color/login_white</item>
+        <item name="android:weekSeparatorLineColor">@color/login_white</item>
+        <item name="colorPrimaryDark">@color/login_white</item>
+        <item name="colorAccent">@color/login_white</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

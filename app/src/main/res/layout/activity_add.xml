@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.plutos_seup.tweetags.AddActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+            <LinearLayout
+                android:id="@+id/Add_back_btn"
+                android:layout_marginLeft="0dp"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text="CANCEL"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:text="ADD TAG"
+                android:textSize="22dp"
+                android:layout_centerInParent="true"
+                />
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="0dp"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text="SAVE"
+                    android:layout_marginRight="5dp"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+
+    </android.support.design.widget.AppBarLayout>
+
+</android.support.design.widget.CoordinatorLayout>
