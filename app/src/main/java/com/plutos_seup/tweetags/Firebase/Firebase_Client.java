@@ -78,6 +78,8 @@ public class Firebase_Client {
 
             main_data.setTag_name(ds.getValue(Tags.class).getTag_name());
             main_data.setCover_url(ds.getValue(Tags.class).getCover_url());
+            main_data.setTag_key(ds.getValue(Tags.class).getTag_key());
+            main_data.setTag_date(ds.getValue(Tags.class).getTag_date());
 
             main_datas.add(main_data);
 

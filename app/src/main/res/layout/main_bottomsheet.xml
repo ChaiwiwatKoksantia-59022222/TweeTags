@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#c6f4f4f4"
+    android:id="@+id/bs_main_sc"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#FFFFFF"
+        android:layout_height="15dp">
+
+        <RelativeLayout
+            android:layout_width="20dp"
+            android:layout_height="5dp"
+            android:background="#e4e4e4"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            ></RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="0dp"
+        android:id="@+id/main_card_hashtag_btn_detail"
+        android:clickable="true"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/bs_main_people"
+                android:layout_height="70dp"
+                android:text="SHOW MORE DETAILS"
+                android:layout_width="wrap_content"
+                android:paddingRight="0dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_vertical"
+
+                android:drawablePadding="20dp"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <RelativeLayout
+        android:background="#e4e4e4"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="2dp">
+
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="App Link"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="0dp"
+
+        />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:layout_marginLeft="20dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="0dp"
+        android:id="@+id/main_card_hashtag_btn_search"
+        >
+
+        <RelativeLayout
+            android:background="?attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:paddingRight="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_height="70dp"
+                android:text="JUMP TO TWITTER SEARCH"
+
+                android:drawablePadding="20dp"
+
+                android:gravity="center_vertical"
+
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+
+    <RelativeLayout
+        android:background="#e4e4e4"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="2dp">
+
+
+
+    </RelativeLayout>
+
+
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:layout_marginLeft="20dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="0dp"
+        android:id="@+id/main_card_hashtag_btn_dropdown"
+        app:cardBackgroundColor="@color/colorPrimary"
+        >
+
+        <RelativeLayout
+            android:background="?attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:paddingRight="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_height="70dp"
+                android:text="DROP DOWN"
+                android:textColor="#FFFFFF"
+                android:drawablePadding="20dp"
+
+                android:gravity="center_vertical"
+
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+</LinearLayout>

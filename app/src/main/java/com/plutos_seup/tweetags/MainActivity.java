@@ -73,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
         sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sign_out_dialog();
+                if (menu_open == true) {
+                    sign_out_dialog();
+
+                }
             }
         });
 
@@ -103,8 +106,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(user != null) {
+                    int mode = 0;
                     Intent intent = new Intent(MainActivity.this,AddActivity.class);
+                    intent.putExtra("mode",mode);
                     startActivity(intent);
+                    if(menu_open == true){
+                        menu_close();
+                    }
                 }
             }
         });
@@ -137,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void menu_open(){
+        sign_out.setEnabled(true);
+        sign_out.setVisibility(View.VISIBLE);
+
         open.setVisibility(View.GONE);
         close.setVisibility(View.VISIBLE);
         TranslateAnimation animation_in = new TranslateAnimation(0,0,0-menu_drawer_layout.getHeight(),0);
@@ -148,6 +159,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void menu_close(){
+
+        sign_out.setEnabled(false);
+        sign_out.setVisibility(View.GONE);
+
         open.setVisibility(View.VISIBLE);
         close.setVisibility(View.GONE);
         TranslateAnimation animation_out = new TranslateAnimation(0,0, 0, 0-menu_drawer_layout.getHeight());
@@ -170,7 +185,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sign_out_dialog(){
-        menu_close();
+        if (menu_open == true){
+            menu_close();
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,R.style.AppCompatAlertDialogStyle);
         builder.setMessage("Do you want to sign out?");
         builder.setTitle("Message");
@@ -186,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void exit_dialog(){
-        menu_close();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,R.style.AppCompatAlertDialogStyle);
         builder.setMessage("Do you want to exit?");
         builder.setTitle("Message");
@@ -203,6 +220,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        exit_dialog();
+        if (menu_open == true){
+            menu_close();
+        }
+        else {
+            exit_dialog();
+        }
     }
+
+    private void Toast(String text){
+
+        Toast.makeText(MainActivity.this,text,Toast.LENGTH_SHORT).show();
+
+    }
+
 }

@@ -6,9 +6,9 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        app:cardBackgroundColor="@android:color/transparent"
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
+        app:cardBackgroundColor="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -24,33 +24,69 @@
 
 
         <ImageView
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/test"
+            android:layout_height="250dp"
             android:scaleType="centerCrop"
             android:id="@+id/tag_card_image_cover"
             />
 
         <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/tag_image_shadow"
+            android:layout_width="match_parent"
+            android:background="@drawable/shadow"
+            android:layout_height="match_parent"/>
+
+        <RelativeLayout
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             >
 
-            <TextView
-                android:fontFamily="sans-serif-light"
-                android:id="@+id/tag_card_text_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="#HASHTAG"
-                android:padding="0dp"
-                android:layout_marginLeft="20dp"
-                android:textSize="22dp"
-                android:layout_centerVertical="true"
-                android:layout_centerInParent="false"
-                android:layout_alignParentBottom="false"
-                android:textColor="#ffffff"
-                />
+            <RelativeLayout
+                android:id="@+id/tag_card_relative_1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:fontFamily="sans-serif-light"
+                    android:id="@+id/tag_card_text_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#HASHTAG"
+                    android:padding="0dp"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="22dp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="false"
+                    android:layout_alignParentBottom="false"
+                    android:textColor="#ffffff"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/tag_card_relative_2"
+                android:layout_width="match_parent"
+                android:layout_height="64dp">
+
+                <TextView
+                    android:fontFamily="sans-serif-light"
+                    android:id="@+id/tag_card_text_name_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#HASHTAG"
+                    android:padding="0dp"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="22dp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="false"
+                    android:layout_alignParentBottom="false"
+                    android:textColor="#616161"
+                    />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
