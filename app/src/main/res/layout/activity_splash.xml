@@ -20,17 +20,25 @@
             android:layout_height="96dp"
             android:layout_gravity="center"
             android:layout_marginBottom="40dp"
-            android:src="@drawable/ic_twitter_logo_silhouette"
+            android:src="@drawable/image_ww"
 
             />
 
         <TextView
+            android:visibility="visible"
             android:layout_centerInParent="true"
             android:text="@string/app_name"
             android:textSize="48dp"
             android:fontFamily="sans-serif-light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <ImageView
+            android:visibility="gone"
+            android:paddingTop="0dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/iu_1"
+            android:layout_width="250dp"
+            android:layout_height="130dp" />
 
 
     </LinearLayout>

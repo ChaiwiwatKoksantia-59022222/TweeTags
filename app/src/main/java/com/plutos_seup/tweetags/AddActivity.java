@@ -208,6 +208,18 @@ public class AddActivity extends AppCompatActivity {
                     image_clear();
                 }
             }
+            else if (mode == 3){
+                toolbar_tv.setText("ADD TAG");
+                key = date_fake + ar;
+                String rte = bundle.getString("text");
+                Intent intent_s = getIntent();
+                String action = intent_s.getAction();
+                String type = intent_s.getType();
+                if ("text/plain".equals(type)) {
+                    String text_po = intent_s.getStringExtra(Intent.EXTRA_TEXT);
+                    editText_tag_name.setText(rte);
+                }
+            }
             else {
                 toolbar_tv.setText("ADD TAG");
                 key = date_fake + ar;

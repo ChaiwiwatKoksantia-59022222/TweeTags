@@ -14,10 +14,10 @@ public class Picasso {
     public static void downloadImage(Context context, String url, ImageView imageView){
 
         if (url != null &&  url.length()>0){
-            com.squareup.picasso.Picasso.with(context).load(url).placeholder(R.drawable.test).into(imageView);
+            com.squareup.picasso.Picasso.with(context).load(url).placeholder(R.drawable.bg_color).into(imageView);
         }
         else {
-            com.squareup.picasso.Picasso.with(context).load(R.drawable.test).into(imageView);
+            com.squareup.picasso.Picasso.with(context).load(R.drawable.bg_color).into(imageView);
         }
 
     }

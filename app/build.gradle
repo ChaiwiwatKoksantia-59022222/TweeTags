@@ -38,7 +38,6 @@ dependencies {
     })
 
 
-    compile 'com.android.support.constraint:constraint-layout:1.0.0'
 
     compile('com.twitter.sdk.android:twitter-core:1.6.6@aar') {
         transitive = true
@@ -48,6 +47,7 @@ dependencies {
     }
 
 
+    compile 'com.android.support.constraint:constraint-layout:1.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0'
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
@@ -61,6 +61,7 @@ dependencies {
     compile 'com.yayandroid:ParallaxRecyclerView:1.1'
     testCompile 'junit:junit:4.12'
 }
+
 
 
 

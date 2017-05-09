@@ -44,7 +44,7 @@
             <TextView
                 android:id="@+id/bs_main_people"
                 android:layout_height="70dp"
-                android:text="SHOW MORE DETAILS"
+                android:text="CARD CONTROL"
                 android:layout_width="wrap_content"
                 android:paddingRight="0dp"
                 android:layout_centerHorizontal="true"

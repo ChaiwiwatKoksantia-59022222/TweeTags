@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
@@ -47,11 +48,13 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
     Context context;
     ArrayList<Tags> data;
 
+    String name_u;
+
     BottomSheetDialog main_bs_dialog,main_mode_bs_dialog,main_delete_dialog;
     BottomSheetBehavior main_bs_behavior,main_mode_bs_behavior,main_delete_behavior;
     View main_bs_view,main_mode_bs_view,main_delete_view;
 
-    private int position_s;
+    private int position_s,position_w;
 
     public Main_Adapter(Context context, ArrayList<com.plutos_seup.tweetags.Data.Tags> datas) {
 
@@ -146,7 +149,7 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
             @Override
             public void onClick(View v) {
                 click_s();
-
+                position_w = position;
             }
         });
 
@@ -154,6 +157,7 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
             @Override
             public void onClick(View v) {
                 click_s();
+                position_w = position;
             }
         });
 
@@ -213,6 +217,25 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
             @Override
             public void onClick(View v) {
                 main_bs_dialog.hide();
+            }
+        });
+
+        CardView main_search = (CardView)main_bs_view.findViewById(R.id.main_card_hashtag_btn_search);
+        main_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+
+                name_u = data.get(position_w).getTag_name().toString();
+
+                String we = Character.toString(name_u.charAt(0));
+                Boolean sw = we.contains("#");
+                if (sw == true) {
+                    String url_d = name_u.substring(1);
+                    String url = "https://twitter.com/search?f=images&vertical=default&q=%23"+url_d;
+                    intent.setData(Uri.parse(url));
+                    context.startActivity(Intent.createChooser(intent,"Open with"));
+                }
             }
         });
 
@@ -312,6 +335,15 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
                 context.getApplicationContext().startActivity(intent);
 
                 main_mode_bs_dialog.hide();
+            }
+        });
+
+        CardView main_con = (CardView)main_bs_view.findViewById(R.id.main_card_hashtag_btn_detail);
+        main_con.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main_bs_dialog.hide();
+                main_mode_bs_dialog.show();
             }
         });
 

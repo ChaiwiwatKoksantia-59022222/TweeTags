@@ -160,9 +160,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void menu_close(){
 
-        sign_out.setEnabled(false);
-        sign_out.setVisibility(View.GONE);
-
         open.setVisibility(View.VISIBLE);
         close.setVisibility(View.GONE);
         TranslateAnimation animation_out = new TranslateAnimation(0,0, 0, 0-menu_drawer_layout.getHeight());
@@ -171,6 +168,11 @@ public class MainActivity extends AppCompatActivity {
         menu_drawer_layout.setAnimation(animation_out);
         menu_drawer_layout.setVisibility(View.GONE);
         menu_open = false;
+        if (animation_out.hasEnded()){
+            sign_out.setEnabled(false);
+            sign_out.setVisibility(View.GONE);
+        }
+
     }
 
     private void Sign_out() {
