@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -25,8 +26,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,6 +42,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -53,9 +58,12 @@ import java.util.Calendar;
 
 public class AddActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth,sds;
+
+
+
     final static String database_url = "https://tweetags-512a8.firebaseio.com/";
-    String database_url_user;
+    private String database_url_user,ar;
 
     private LinearLayout save_btn,gallery_btn,url_btn,layout_btn;
     private EditText editText_tag_name;
@@ -65,12 +73,16 @@ public class AddActivity extends AppCompatActivity {
     private ImageView imageView_bg;
     private CardView clear_btn;
 
+    private static String main_firebase;
+
     private String tag_names = "";
 
     private Button cancel,confirm,clip;
     private ClipboardManager clipboardManager;
 
     String date_demo;
+
+    String df;
 
     String url_image = "";
     String UID = "";
@@ -85,6 +97,8 @@ public class AddActivity extends AppCompatActivity {
 
     Dialog input_dialog;
 
+    Bundle bundle;
+
     boolean image_check = false;
     boolean dialog_check = false;
 
@@ -96,7 +110,7 @@ public class AddActivity extends AppCompatActivity {
 
     private TextView toolbar_tv;
 
-    private int mode;
+    private int mode = -1;
     private String tag_name_s,cover_s,date_s,key_s;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -107,7 +121,7 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
-        Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
         mode = bundle.getInt("mode");
 
         firebase_client_add = new Firebase_Client_Add();
@@ -140,17 +154,7 @@ public class AddActivity extends AppCompatActivity {
 
         if (user != null){
 
-            String user_UID = user.getUid();
-            UID = user_UID;
 
-            database_url_user = database_url+"User/"+user_UID+"/";
-
-            Firebase firebase = new Firebase(database_url_user);
-            final Firebase firebase1 = firebase.child("Tags");
-            String ar = firebase1.push().getKey();
-
-            date_fake = date_cal();
-            date_real = real_date();
 
 
 
@@ -191,10 +195,7 @@ public class AddActivity extends AppCompatActivity {
             add_clear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    clear_btn.setVisibility(View.GONE);
-                    imageView_bg.setVisibility(View.INVISIBLE);
-                    layout_btn.setVisibility(View.VISIBLE);
-                    image_check = false;
+                    image_clear();
                     url_image = "";
                 }
             });
@@ -204,7 +205,7 @@ public class AddActivity extends AppCompatActivity {
                 tag_name_s = bundle.getString("name");
                 editText_tag_name.setText(tag_name_s);
                 cover_s = bundle.getString("cover");
-                key = bundle.getString("key");
+
 
                 if (cover_s.length()>0){
                     Picasso.downloadImage(AddActivity.this,cover_s,imageView_bg);
@@ -218,19 +219,19 @@ public class AddActivity extends AppCompatActivity {
             }
             else if (mode == 3){
                 toolbar_tv.setText("ADD TAG");
-                key = date_fake + ar;
                 String rte = bundle.getString("text");
                 Intent intent_s = getIntent();
                 String action = intent_s.getAction();
                 String type = intent_s.getType();
                 if ("text/plain".equals(type)) {
                     String text_po = intent_s.getStringExtra(Intent.EXTRA_TEXT);
-                    editText_tag_name.setText(rte);
+                    editText_tag_name.setText(text_po);
                 }
             }
             else {
+
                 toolbar_tv.setText("ADD TAG");
-                key = date_fake + ar;
+
             }
 
 
@@ -298,6 +299,75 @@ public class AddActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        sds = FirebaseAuth.getInstance();
+        final FirebaseUser user_s = sds.getCurrentUser();
+
+        if (user_s != null){
+            String user_UID = user_s.getUid();
+            UID = user_UID;
+
+            database_url_user = database_url+"User/"+user_UID+"/";
+
+            try {
+
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+                DatabaseReference firebase_s = databaseReference.child("User").child(user_UID).child("Tags");
+
+                ar = firebase_s.push().getKey();
+
+                //Firebase firebase = new Firebase(database_url_user);
+                //Firebase firebase1 = firebase.child("Tags");
+                //ar = firebase1.push().getKey();
+                main_firebase = ar;
+
+            }catch (Exception e){
+
+            }
+
+            date_fake = date_cal();
+            date_real = real_date();
+
+            mode_check();
+
+
+        }
+
+
+    }
+
+    private void mode_check(){
+        if (mode == 1){
+            key = bundle.getString("key");
+        }
+        else {
+            key = date_fake + ar;
+
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (dialog_check == true){
@@ -322,11 +392,12 @@ public class AddActivity extends AppCompatActivity {
     private void image_open(){
         imageView_bg.setVisibility(View.VISIBLE);
         layout_btn.setVisibility(View.INVISIBLE);
-        clear_btn.setVisibility(View.VISIBLE);
 
         image_check = true;
+        clear_btn.setVisibility(View.VISIBLE);
 
         size_image();
+
 
 
     }
@@ -343,7 +414,6 @@ public class AddActivity extends AppCompatActivity {
 
         double s_e = 0.0;
         String inu = "";
-        Toast(String.valueOf(suy));
 
         if (suy>=1024){
             s_e = suy/1024;
@@ -354,7 +424,11 @@ public class AddActivity extends AppCompatActivity {
             inu = "KB";
         }
 
-        String df = new DecimalFormat("0.00").format(s_e);
+
+        df = new DecimalFormat("0.00").format(s_e);
+        if (df.contentEquals("35.03")==true){
+            df = "0.00";
+        }
         String urt = df+" "+inu;
         text_size.setText(urt);
         //Toast("Length of the Image : "+df+" "+inu);
@@ -363,9 +437,10 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void image_clear(){
-        clear_btn.setVisibility(View.GONE);
         imageView_bg.setVisibility(View.INVISIBLE);
         layout_btn.setVisibility(View.VISIBLE);
+        clear_btn.setVisibility(View.GONE);
+
         image_check = false;
     }
 
@@ -373,7 +448,6 @@ public class AddActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_CODE && resultCode == RESULT_OK) {
-
             Uri uri = data.getData();
 
             if ( null != uri){
@@ -450,6 +524,7 @@ public class AddActivity extends AppCompatActivity {
         firebase_client_add.saveOnline(tag_names,df,key,UID,date_real,date_demo);
         Toast.makeText(AddActivity.this,"Upload Successful",Toast.LENGTH_SHORT).show();
         finish();
+
     }
 
 
@@ -543,6 +618,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
+
             }
         });
         builder.create();
@@ -554,7 +630,15 @@ public class AddActivity extends AppCompatActivity {
         cancel_dialog();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("Firebase",ar);
+    }
 
-
-
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ar = savedInstanceState.getString("Firebase");
+    }
 }

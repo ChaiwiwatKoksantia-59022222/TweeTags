@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.plutos_seup.tweetags.AddActivity;
@@ -373,11 +375,14 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
             public void onClick(View v) {
                 Toast.makeText(context,"Deleted",Toast.LENGTH_SHORT).show();
                 main_delete_dialog.hide();
-                Firebase firebase = new Firebase(database_url);
                 String user_UID = user.getUid();
                 UID = user_UID;
                 String key_d = data.get(position_w).getTag_key().toString();
-                firebase.child("User").child(UID).child("Tags").child(key_d).removeValue();
+
+
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference firebase = databaseReference.child("User").child(UID).child("Tags").child(key_d);
+                firebase.removeValue();
 
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference reference = storage.getReferenceFromUrl(storage_url);
@@ -391,11 +396,16 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
 
     private void delete(int n){
         final FirebaseUser user = mAuth.getCurrentUser();
-        Firebase firebase = new Firebase(database_url);
+
+
         String user_UID = user.getUid();
         UID = user_UID;
         String key_d = data.get(n).getTag_key().toString();
-        firebase.child("User").child(UID).child("Tags").child(key_d).removeValue();
+
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference firebase = databaseReference.child("User").child(UID).child("Tags").child(key_d);
+        firebase.removeValue();
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference reference = storage.getReferenceFromUrl(storage_url);

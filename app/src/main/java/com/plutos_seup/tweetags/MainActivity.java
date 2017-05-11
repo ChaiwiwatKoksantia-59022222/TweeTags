@@ -1,6 +1,8 @@
 package com.plutos_seup.tweetags;
 
 import android.animation.Animator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +21,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -58,11 +61,13 @@ public class MainActivity extends AppCompatActivity {
     final static String database_url = "https://tweetags-512a8.firebaseio.com/";
     String database_url_user;
 
-    Firebase_Client firebase_client;
+    protected Firebase_Client firebase_client;
 
     RecyclerView recyclerView;
 
     CardView progressBar;
+
+    Animation animator;
 
     LinearLayout menu_drawer_btn;
     LinearLayout menu_drawer_layout;
@@ -71,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
     Boolean menu_open = false;
     de.hdodenhof.circleimageview.CircleImageView main_image_profile;
     TextView sign_out;
+
+    RelativeLayout main_load;
 
     //SunBabyLoadingView sunBabyLoadingView;
 
@@ -87,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         close = (ImageView)findViewById(R.id.main_menu_drawer_btn_close);
 
         ImageView main_add_btn = (ImageView)findViewById(R.id.main_add_btn);
+        main_load = (RelativeLayout)findViewById(R.id.main_load_layout);
+        main_load.setVisibility(View.VISIBLE);
 
 
         main_image_profile = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.main_image_profile);
@@ -176,6 +185,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -245,7 +264,27 @@ public class MainActivity extends AppCompatActivity {
             globalRoomDbRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    progressBar.setVisibility(View.GONE);
+                    animator = new AlphaAnimation(1,0);
+                    animator.setDuration(500);
+                    animator.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            main_load.setVisibility(View.GONE);
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    main_load.startAnimation(animator);
+
                     //sunBabyLoadingView.setVisibility(View.GONE);
                     check = true;
                 }
@@ -310,5 +349,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this,text,Toast.LENGTH_SHORT).show();
 
     }
+
+
 
 }

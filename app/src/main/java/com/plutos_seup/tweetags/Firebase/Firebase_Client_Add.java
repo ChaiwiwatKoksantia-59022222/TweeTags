@@ -1,8 +1,11 @@
 package com.plutos_seup.tweetags.Firebase;
 
 import android.provider.Contacts;
+import android.util.Log;
 
 import com.firebase.client.Firebase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.plutos_seup.tweetags.Data.Tags;
 
 /**
@@ -26,9 +29,9 @@ public class Firebase_Client_Add {
                 tags.setTag_key(key);
                 tags.setTag_date(date);
 
-                Firebase firebase = new Firebase(database_url);
-                Firebase firebase1 = firebase.child("User").child(Uid).child("Tags");
-                firebase1.child(key).setValue(tags);
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference firebase = databaseReference.child("User").child(Uid).child("Tags");
+                firebase.child(key).setValue(tags);
             }
             else {
                 Tags tags_2 = new Tags();
@@ -36,9 +39,11 @@ public class Firebase_Client_Add {
                 tags_2.setCover_url("");
                 tags_2.setTag_key(demo);
                 tags_2.setTag_date(date);
-                Firebase firebase2 = new Firebase(database_url);
-                Firebase firebase3 = firebase2.child("User").child(Uid).child("Tags");
-                firebase3.child(demo).setValue(tags_2);
+
+                DatabaseReference databaseReference3 = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference firebase_s4 = databaseReference3.child("User").child(Uid).child("Tags");
+                firebase_s4.child(demo).setValue(tags_2);
+
             }
         }
 
