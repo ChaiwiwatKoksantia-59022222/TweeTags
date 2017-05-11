@@ -165,7 +165,7 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
             @Override
             public boolean onLongClick(View v) {
                 click_l();
-                position_s = position;
+                position_w = position;
                 return false;
             }
         });
@@ -174,7 +174,7 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
             @Override
             public boolean onLongClick(View v) {
                 click_l();
-                position_s = position;
+                position_w = position;
                 return false;
             }
         });
@@ -235,6 +235,7 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
                     String url = "https://twitter.com/search?f=images&vertical=default&q=%23"+url_d;
                     intent.setData(Uri.parse(url));
                     context.startActivity(Intent.createChooser(intent,"Open with"));
+                    main_bs_dialog.cancel();
                 }
             }
         });
@@ -318,10 +319,10 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
         mode_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cover = data.get(position_s).getCover_url().toString();
-                String key = data.get(position_s).getTag_key().toString();
-                String name = data.get(position_s).getTag_name().toString();
-                String date = data.get(position_s).getTag_date().toString();
+                String cover = data.get(position_w).getCover_url().toString();
+                String key = data.get(position_w).getTag_key().toString();
+                String name = data.get(position_w).getTag_name().toString();
+                String date = data.get(position_w).getTag_date().toString();
 
                 Intent intent = new Intent(context,AddActivity.class);
                 intent.putExtra("cover",cover);
@@ -375,7 +376,7 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
                 Firebase firebase = new Firebase(database_url);
                 String user_UID = user.getUid();
                 UID = user_UID;
-                String key_d = data.get(position_s).getTag_key().toString();
+                String key_d = data.get(position_w).getTag_key().toString();
                 firebase.child("User").child(UID).child("Tags").child(key_d).removeValue();
 
                 FirebaseStorage storage = FirebaseStorage.getInstance();

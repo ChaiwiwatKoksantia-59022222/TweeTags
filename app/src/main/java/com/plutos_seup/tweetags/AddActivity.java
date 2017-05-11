@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -46,6 +47,7 @@ import com.plutos_seup.tweetags.Firebase.Firebase_Client_Add;
 import com.plutos_seup.tweetags.Picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -74,6 +76,9 @@ public class AddActivity extends AppCompatActivity {
     String UID = "";
 
     String key = "";
+
+    TextView text_size;
+    CardView add_clear;
 
     String date_real;
     String date_fake;
@@ -115,11 +120,14 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+        text_size = (TextView)findViewById(R.id.add_main_text_size);
+
+
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
 
         toolbar_tv = (TextView)findViewById(R.id.tv_toolbar_add);
-
+        add_clear = (CardView)findViewById(R.id.add_image_btn_clear);
 
         save_btn = (LinearLayout)findViewById(R.id.add_hashtag_upload);
         gallery_btn = (LinearLayout)findViewById(R.id.add_hashtag_gallrey_btn);
@@ -180,7 +188,7 @@ public class AddActivity extends AppCompatActivity {
                 }
             });
 
-            clear_btn.setOnClickListener(new View.OnClickListener() {
+            add_clear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     clear_btn.setVisibility(View.GONE);
@@ -274,8 +282,13 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String r = editText.getText().toString();
-                Picasso.downloadImage(AddActivity.this,r,imageView_bg);
-                image_open();
+                if (r.length()>0){
+                    Picasso.downloadImage(AddActivity.this,r,imageView_bg);
+                    image_open();
+                }
+                else {
+                    Toast("NOT URL");
+                }
                 input_dialog.cancel();
                 dialog_check = false;
             }
@@ -310,7 +323,43 @@ public class AddActivity extends AppCompatActivity {
         imageView_bg.setVisibility(View.VISIBLE);
         layout_btn.setVisibility(View.INVISIBLE);
         clear_btn.setVisibility(View.VISIBLE);
+
         image_check = true;
+
+        size_image();
+
+
+    }
+
+    private void size_image(){
+        Bitmap bitmap = ((BitmapDrawable)imageView_bg.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        byte[] imageInByte = stream.toByteArray();
+        long lengthbmp = imageInByte.length;
+        String s = String.valueOf(lengthbmp).toString();
+        double leng = Double.parseDouble(s);
+        double suy = leng/1024;
+
+        double s_e = 0.0;
+        String inu = "";
+        Toast(String.valueOf(suy));
+
+        if (suy>=1024){
+            s_e = suy/1024;
+            inu = "MB";
+        }
+        else {
+            s_e = suy;
+            inu = "KB";
+        }
+
+        String df = new DecimalFormat("0.00").format(s_e);
+        String urt = df+" "+inu;
+        text_size.setText(urt);
+        //Toast("Length of the Image : "+df+" "+inu);
+
+
     }
 
     private void image_clear(){
@@ -354,7 +403,7 @@ public class AddActivity extends AppCompatActivity {
             imageView_bg.buildDrawingCache();
             Bitmap bitmap = imageView_bg.getDrawingCache();
             ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG,100,arrayOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,80,arrayOutputStream);
             final byte[] data = arrayOutputStream.toByteArray();
 
             final UploadTask uploadTask = myfile.putBytes(data);

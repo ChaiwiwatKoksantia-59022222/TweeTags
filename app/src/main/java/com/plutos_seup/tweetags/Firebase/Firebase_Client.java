@@ -39,6 +39,7 @@ public class Firebase_Client {
 
 
 
+
     public void refresh(){
 
         firebase.addChildEventListener(new ChildEventListener() {
@@ -46,7 +47,6 @@ public class Firebase_Client {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 getUpdate(dataSnapshot);
             }
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 getUpdate(dataSnapshot);

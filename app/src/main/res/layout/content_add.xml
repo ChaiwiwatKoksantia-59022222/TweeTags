@@ -130,29 +130,83 @@
                         android:scaleType="centerCrop"
                         android:id="@+id/image_add_hashtag_card"
                         />
-                    <android.support.v7.widget.CardView
-                        android:visibility="gone"
-                        android:id="@+id/add_hashtag_clear_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardElevation="0dp"
-                        app:cardCornerRadius="30dp"
-                        android:layout_centerInParent="true"
-                        app:cardBackgroundColor="#a8ffffff"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="CHANGE IMAGE"
-                            android:padding="20dp"
-                            />
-
-                    </android.support.v7.widget.CardView>
 
                 </RelativeLayout>
 
 
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:visibility="gone"
+                android:id="@+id/add_hashtag_clear_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                android:layout_marginBottom="15dp"
+                app:cardCornerRadius="0dp"
+                android:layout_centerInParent="true"
+                app:cardBackgroundColor="#ffffff"
+                >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_height="56dp"
+                        android:layout_width="match_parent"
+                        >
+
+                        <TextView
+                            android:layout_marginLeft="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="Image size"
+                            />
+
+                        <TextView
+                            android:id="@+id/add_main_text_size"
+                            android:fontFamily="sans-serif-light"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0.00 KB"
+                            android:textSize="16dp"
+                            android:textColor="#fcd127"
+                            android:layout_marginRight="20dp"
+                            android:layout_centerVertical="true"
+                            />
+
+                    </RelativeLayout>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/add_image_btn_clear"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        app:cardBackgroundColor="#ffed67"
+                        app:cardElevation="0dp"
+                        app:cardCornerRadius="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:textColor="#cf9413"
+                            android:layout_gravity="center"
+                            android:padding="13dp"
+                            android:text="CHANGE IMAGE"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
 
             </android.support.v7.widget.CardView>
 
@@ -189,7 +243,7 @@
                         android:layout_marginLeft="20dp"
                         android:hint="Tag name"
                         android:theme="@style/Add_AppTheme"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="#676668"
                         android:id="@+id/add_hashtag_edittext_name"
                         />
 
@@ -224,7 +278,7 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="15dp"
                 android:background="#FFFFFF"
@@ -253,7 +307,7 @@
                     android:fontFamily="sans-serif-light"
                     android:paddingBottom="10dp"
                     android:theme="@style/MyButton"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="#676668"
                     />
 
             </RelativeLayout>

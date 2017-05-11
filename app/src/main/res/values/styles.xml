@@ -3,12 +3,13 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#FFFFFF</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
+        <item name="android:windowLightStatusBar">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -22,8 +23,17 @@
 
     </style>
 
+    <style name="ActionBar_light" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#FFFFFF</item>
+        <item name="android:textColor">#676668</item>
+        <item name="elevation">0dp</item>
+
+    </style>
+
     <style name="MyButton" parent="Widget.AppCompat.Button.Borderless.Colored">
-        <item name="colorControlHighlight">#E0F7FA</item>
+        <item name="colorControlHighlight">#55676668</item>
 
     </style>
 
@@ -33,12 +43,12 @@
 
     <style name="Add_AppTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorControlNormal">@color/colorPrimary</item>
-        <item name="android:textColorHint">@color/colorPrimary</item>
-        <item name="android:weekSeparatorLineColor">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#FFFFFF</item>
+        <item name="colorControlNormal">#676668</item>
+        <item name="android:textColorHint">#676668</item>
+        <item name="android:weekSeparatorLineColor">#676668</item>
+        <item name="colorAccent">#676668</item>
     </style>
 
     <style name="ActionBar_test" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -74,6 +84,10 @@
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
 
+    </style>
+
+    <style name="PROAccent" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">#bf676668</item>
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">

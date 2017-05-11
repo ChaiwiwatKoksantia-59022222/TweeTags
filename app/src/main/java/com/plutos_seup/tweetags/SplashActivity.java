@@ -15,7 +15,7 @@ public class SplashActivity extends AppCompatActivity {
     Runnable runnable;
 
     long delay_time;
-    long time = 3000;
+    long time = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

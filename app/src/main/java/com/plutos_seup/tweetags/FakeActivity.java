@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+
 public class FakeActivity extends AppCompatActivity {
 
     @Override
@@ -26,8 +28,16 @@ public class FakeActivity extends AppCompatActivity {
             String text_po = intent_s.getStringExtra(Intent.EXTRA_TEXT);
             Intent intent = new Intent(FakeActivity.this,AddActivity.class);
             intent.putExtra("mode",3);
+            //String result = java.net.URLDecoder.decode(text_po, "UTF-8");
+            String result = "";
+            try {
+                result = java.net.URLDecoder.decode(text_po,"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             Toast(text_po);
-            Log.e("CHECK",text_po);
+            Log.e("URL",text_po);
+            Log.e("Result",result);
             intent.putExtra("text",text_po);
             startActivity(intent);
             finish();
