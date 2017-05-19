@@ -12,5 +12,6 @@
     <string name="twitter_consumer_secret">CDvaxC3zQNU73cn3LBl5IkhxB5jDEbSK7FPzvosMQ0eB2gCA4P</string>
     <string name="title_activity_add">AddActivity</string>
     <string name="title_activity_fake">FakeActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>

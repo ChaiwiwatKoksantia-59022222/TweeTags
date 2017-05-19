@@ -1,6 +1,8 @@
 package com.plutos_seup.tweetags;
 
 import android.animation.Animator;
+import android.app.Dialog;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.animation.AnimatorListenerAdapter;
@@ -24,6 +26,7 @@ import android.view.MenuItem;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -79,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     RelativeLayout main_load;
 
+    TextView textView_dialog;
+    Button confirm_btn_s,cancel_btn_s;
+    Dialog text_dialog;
+
     //SunBabyLoadingView sunBabyLoadingView;
 
     private boolean check = false;
@@ -87,6 +94,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView test_btn = (TextView)findViewById(R.id.test_btn);
+        test_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,SearchActivity.class);
+                intent.putExtra("mode","0");
+                startActivity(intent);
+            }
+        });
+
+
 
         menu_drawer_btn = (LinearLayout) findViewById(R.id.main_menu_drawer_btn);
         menu_drawer_layout = (LinearLayout)findViewById(R.id.main_menu_drawer_layout);
@@ -254,6 +273,41 @@ public class MainActivity extends AppCompatActivity {
         loading();
     }
 
+    private void dialog(final int dialog_mode, String text, String cancel_btn, String confirm_btn){
+        text_dialog = new Dialog(MainActivity.this);
+        text_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        text_dialog.setContentView(R.layout.cancel_dialog);
+        text_dialog.setCancelable(true);
+        text_dialog.show();
+
+        textView_dialog = (TextView)text_dialog.findViewById(R.id.can_textview_dialog);
+        cancel_btn_s = (Button)text_dialog.findViewById(R.id.can_cancel_btn);
+        confirm_btn_s = (Button)text_dialog.findViewById(R.id.can_confirm_btn);
+
+        textView_dialog.setText(text);
+        cancel_btn_s.setText(cancel_btn);
+        confirm_btn_s.setText(confirm_btn);
+
+        cancel_btn_s.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                text_dialog.cancel();
+            }
+        });
+        confirm_btn_s.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog_mode == 0){
+                    finish();
+                }
+                else if (dialog_mode == 1){
+                    Sign_out();
+                }
+            }
+        });
+
+    }
+
     private void loading() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference rootDbRef = firebaseDatabase.getReference();
@@ -304,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
         if (menu_open == true){
             menu_close();
         }
+        /*
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,R.style.AppCompatAlertDialogStyle);
         builder.setMessage("Do you want to sign out?");
         builder.setTitle("Message");
@@ -316,10 +371,14 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.create();
         builder.show();
+        */
+        dialog(1,"Do you want to sign out?","CANCEL","SIGN OUT");
+
+
     }
 
     private void exit_dialog(){
-
+/*
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,R.style.AppCompatAlertDialogStyle);
         builder.setMessage("Do you want to exit?");
         builder.setTitle("Message");
@@ -332,6 +391,10 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.create();
         builder.show();
+
+  */
+        dialog(0,"Do you want to exit?","CANCEL","EXIT");
+
     }
 
     @Override

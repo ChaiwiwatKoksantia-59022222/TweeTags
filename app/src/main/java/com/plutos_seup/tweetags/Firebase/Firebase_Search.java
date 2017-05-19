@@ -2,6 +2,7 @@ package com.plutos_seup.tweetags.Firebase;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
@@ -15,14 +16,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.plutos_seup.tweetags.Data.Tags;
 import com.plutos_seup.tweetags.Recyclerview.Main_Adapter;
+import com.plutos_seup.tweetags.Recyclerview.Search_Adapter;
 
 import java.util.ArrayList;
 
-/**
- * Created by androidworkspace on 4/21/2017 AD.
- */
-
-public class Firebase_Client {
+public class Firebase_Search {
 
     Context context;
     String database_url;
@@ -33,9 +31,10 @@ public class Firebase_Client {
 
     Firebase firebase ;
     ArrayList<Tags> main_datas = new ArrayList<>();
-    Main_Adapter adapter;
+    ArrayList<String> datas = new ArrayList<>();
+    Search_Adapter adapter;
 
-    public Firebase_Client (Context context, String database_url, RecyclerView recyclerView) {
+    public Firebase_Search (Context context, String database_url, RecyclerView recyclerView) {
         this.context = context;
         this.database_url = database_url;
         this.recyclerView = recyclerView;
@@ -49,21 +48,21 @@ public class Firebase_Client {
         firebase_s = databaseReference.child("User").child(user_UID);
 
         //Firebase.setAndroidContext(context);
-       // firebase = new Firebase(database_url);
+        // firebase = new Firebase(database_url);
 
     }
 
-    public void refresh(){
+    public void search(final String text){
 
         firebase_s.addChildEventListener(new com.google.firebase.database.ChildEventListener() {
             @Override
             public void onChildAdded(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-                getUpdate(dataSnapshot);
+                getData(dataSnapshot,text);
             }
 
             @Override
             public void onChildChanged(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-                getUpdate(dataSnapshot);
+                getData(dataSnapshot,text);
             }
 
             @Override
@@ -86,28 +85,49 @@ public class Firebase_Client {
 
     }
 
-    private void getUpdate(com.google.firebase.database.DataSnapshot dataSnapshot){
+    private void getData(com.google.firebase.database.DataSnapshot dataSnapshot,String text){
 
-
-        main_datas.clear();
+        datas.clear();
         for (com.google.firebase.database.DataSnapshot ds : dataSnapshot.getChildren()){
 
-            Tags main_data = new Tags();
+            String name = ds.getValue(Tags.class).getTag_name();
 
-            main_data.setTag_name(ds.getValue(Tags.class).getTag_name());
-            main_data.setCover_url(ds.getValue(Tags.class).getCover_url());
-            main_data.setTag_key(ds.getValue(Tags.class).getTag_key());
-            main_data.setTag_date(ds.getValue(Tags.class).getTag_date());
+            int s = name.indexOf(text);
 
-            main_datas.add(main_data);
+            if (s>=0 && text.length()>0){
+                datas.add(name);
+            }
         }
 
-        if (main_datas.size()>0){
-            adapter = new Main_Adapter(context,main_datas);
+        Log.d("TAG", String.valueOf(datas.size()).toString());
+        if (datas.size()>0){
+            adapter = new Search_Adapter(context,datas);
             recyclerView.setAdapter(adapter);
         }
         else {
-            Toast.makeText(context,"No Card",Toast.LENGTH_SHORT).show();
+            datas.clear();
+            if (text.length()==0) {
+                for (com.google.firebase.database.DataSnapshot ds : dataSnapshot.getChildren()){
+
+                    String name = ds.getValue(Tags.class).getTag_name();
+
+                    if (name.length()>0){
+                        datas.add(name);
+                    }
+                }
+            }
+            else {
+                String fg = String.valueOf(text.charAt(0));
+                boolean sg = fg.contains("#");
+                if (sg == false) {
+                    datas.add(text);
+                }
+                else {
+                    datas.clear();
+                }
+            }
+            adapter = new Search_Adapter(context,datas);
+            recyclerView.setAdapter(adapter);
         }
 
 

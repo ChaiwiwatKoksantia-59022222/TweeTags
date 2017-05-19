@@ -26,8 +26,8 @@ public class FakeActivity extends AppCompatActivity {
         String type = intent_s.getType();
         if ("text/plain".equals(type)) {
             String text_po = intent_s.getStringExtra(Intent.EXTRA_TEXT);
-            Intent intent = new Intent(FakeActivity.this,AddActivity.class);
-            intent.putExtra("mode",3);
+            Intent intent = new Intent(FakeActivity.this,SearchActivity.class);
+            intent.putExtra("mode",1);
             //String result = java.net.URLDecoder.decode(text_po, "UTF-8");
             String result = "";
             try {
@@ -35,12 +35,29 @@ public class FakeActivity extends AppCompatActivity {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            Toast(text_po);
-            Log.e("URL",text_po);
-            Log.e("Result",result);
-            intent.putExtra("text",text_po);
-            startActivity(intent);
-            finish();
+
+
+
+            int hash = result.indexOf("/hashtag/");
+
+            if (hash>=0){
+                int stop = result.indexOf("?");
+                Log.e("hash",String.valueOf(hash).toString());
+                Log.e("stop",String.valueOf(stop).toString());
+
+                int start = hash + 9;
+
+                String word = result.substring(start,stop);
+
+                intent.putExtra("text",word);
+                startActivity(intent);
+                finish();
+            }
+            else {
+                Toast.makeText(FakeActivity.this,"Not Support",Toast.LENGTH_LONG).show();
+                finish();
+            }
+
         }
 
 

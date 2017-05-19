@@ -113,6 +113,11 @@ public class AddActivity extends AppCompatActivity {
     private int mode = -1;
     private String tag_name_s,cover_s,date_s,key_s;
 
+    TextView loading_text_dialog;
+    Dialog loading_dialog,text_dialog;
+    TextView textView_dialog;
+    Button confirm_btn_s,cancel_btn_s;
+
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageReference = storage.getReferenceFromUrl("gs://tweetags-512a8.appspot.com");
 
@@ -223,10 +228,7 @@ public class AddActivity extends AppCompatActivity {
                 Intent intent_s = getIntent();
                 String action = intent_s.getAction();
                 String type = intent_s.getType();
-                if ("text/plain".equals(type)) {
-                    String text_po = intent_s.getStringExtra(Intent.EXTRA_TEXT);
-                    editText_tag_name.setText(text_po);
-                }
+                editText_tag_name.setText(rte);
             }
             else {
 
@@ -402,6 +404,49 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
+    private void loading_dialog(){
+        loading_dialog = new Dialog(AddActivity.this);
+        loading_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loading_dialog.setContentView(R.layout.loading_dialog);
+        loading_dialog.setCancelable(true);
+        loading_dialog.show();
+
+        loading_text_dialog = (TextView)loading_dialog.findViewById(R.id.text_loading);
+
+        loading_text_dialog.setText("Uploading ...");
+
+    }
+
+    private void dialog(String text, String cancel_btn, String confirm_btn){
+        text_dialog = new Dialog(AddActivity.this);
+        text_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        text_dialog.setContentView(R.layout.cancel_dialog);
+        text_dialog.setCancelable(true);
+        text_dialog.show();
+
+        textView_dialog = (TextView)text_dialog.findViewById(R.id.can_textview_dialog);
+        cancel_btn_s = (Button)text_dialog.findViewById(R.id.can_cancel_btn);
+        confirm_btn_s = (Button)text_dialog.findViewById(R.id.can_confirm_btn);
+
+        textView_dialog.setText(text);
+        cancel_btn_s.setText(cancel_btn);
+        confirm_btn_s.setText(confirm_btn);
+
+        cancel_btn_s.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                text_dialog.cancel();
+            }
+        });
+        confirm_btn_s.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+    }
+
     private void size_image(){
         Bitmap bitmap = ((BitmapDrawable)imageView_bg.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -464,17 +509,18 @@ public class AddActivity extends AppCompatActivity {
 
     protected void onUploadButtonClick(){
         if (image_check == true){
-            progressDialog = new ProgressDialog(this,R.style.progress);
+            /*progressDialog = new ProgressDialog(this,R.style.progress);
             progressDialog.setMessage("Uploading ... ");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setProgress(0);
             progressDialog.setProgressNumberFormat(null);
             //progressDialog.setIndeterminate(true);
 
-
+*/
             StorageReference myfile = storageReference.child("User").child(UID).child("Tags").child(key+".png");
             imageView_bg.setDrawingCacheEnabled(true);
             imageView_bg.buildDrawingCache();
+
             Bitmap bitmap = imageView_bg.getDrawingCache();
             ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG,80,arrayOutputStream);
@@ -482,13 +528,18 @@ public class AddActivity extends AppCompatActivity {
 
             final UploadTask uploadTask = myfile.putBytes(data);
 
+            /*
             progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     uploadTask.cancel();
                 }
             });
+
+
             progressDialog.show();
+*/
+            loading_dialog();
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -511,7 +562,7 @@ public class AddActivity extends AppCompatActivity {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                     @SuppressWarnings("VisibleForTests") int pro = (int)((100 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount());
-                    progressDialog.setProgress(pro);
+                    //progressDialog.setProgress(pro);
                 }
             });
         }
@@ -610,7 +661,7 @@ public class AddActivity extends AppCompatActivity {
 
 
     private void cancel_dialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this,R.style.AppCompatAlertDialogStyle);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this,R.style.AppCompatAlertDialogStyle);
         builder.setMessage("Do you want to discard?");
         builder.setTitle("Message");
         builder.setNegativeButton("CANCEL",null);
@@ -622,7 +673,10 @@ public class AddActivity extends AppCompatActivity {
             }
         });
         builder.create();
-        builder.show();
+        builder.show();*/
+
+        dialog("Do you want to discard?","CANCEL","DISCARD");
+
     }
 
     @Override
