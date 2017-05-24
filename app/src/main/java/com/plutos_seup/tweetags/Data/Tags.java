@@ -10,8 +10,17 @@ public class Tags {
     private String tag_name;
     private String tag_key;
     private String tag_date;
+    private String sub_tag_count;
 
     public Tags() {
+    }
+
+    public String getSub_tag_count() {
+        return sub_tag_count;
+    }
+
+    public void setSub_tag_count(String sub_tag_count) {
+        this.sub_tag_count = sub_tag_count;
     }
 
     public String getTag_key() {

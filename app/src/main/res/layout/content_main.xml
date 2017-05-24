@@ -50,6 +50,26 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             />
+        <TextView
+            android:id="@+id/main_search_btn"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:textSize="18dp"
+            android:textColor="#676668"
+            android:padding="15dp"
+            android:fontFamily="sans-serif-light"
+            />
+        <RelativeLayout
+            android:id="@+id/line_s_1"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#3c676668"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            />
 
         <LinearLayout
             android:visibility="gone"
@@ -173,9 +193,10 @@
             android:id="@+id/main_sign_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="6dp"
             android:fontFamily="sans-serif-light"
             android:padding="15dp"

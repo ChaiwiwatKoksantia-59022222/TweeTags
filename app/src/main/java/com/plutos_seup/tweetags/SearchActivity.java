@@ -1,12 +1,9 @@
 package com.plutos_seup.tweetags;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,7 +15,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.plutos_seup.tweetags.Firebase.Firebase_Client;
 import com.plutos_seup.tweetags.Firebase.Firebase_Search;
 
 public class SearchActivity extends AppCompatActivity {
@@ -36,6 +32,7 @@ public class SearchActivity extends AppCompatActivity {
     EditText search_et;
 
     boolean vt = false;
+    String k = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +44,11 @@ public class SearchActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         mode = bundle.getInt("mode");
 
-        if (mode == 1){
+        if (mode == 1 || mode == 2){
             String test = bundle.getString("text");
             search_et.setText(test);
-            search(test);
+            search(test,"D");
+            k = test;
         }
 
         LinearLayout back_btn = (LinearLayout)findViewById(R.id.search_back_btn);
@@ -62,7 +60,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 else {
                     search_et.setText("");
-                    search("");
+                    search("","C");
                 }
             }
         });
@@ -80,8 +78,9 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 String text = search_et.getText().toString();
-                search(text);
+                search(text,"B");
             }
         });
 
@@ -91,15 +90,16 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (mode != 1){
-            search("");
-        }
-        else {
-
+        if (mode != 1 || mode != 2){
+            search(k,"A");
         }
     }
 
-    private void search(String text){
+    private void search(String text,String a){
+
+        Log.e("Y","WER");
+        Log.e("I",text);
+        Log.e("U",a);
 
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -125,9 +125,9 @@ public class SearchActivity extends AppCompatActivity {
             recyclerView.setDrawingCacheEnabled(true);
             recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-            firebase_search = new Firebase_Search(SearchActivity.this,database_url_user,recyclerView);
+            String mo = String.valueOf(mode);
 
-            Log.e("Test", text);
+            firebase_search = new Firebase_Search(SearchActivity.this,database_url_user,recyclerView,mo,text);
 
             firebase_search.search(text);
 

@@ -2,6 +2,7 @@ package com.plutos_seup.tweetags.Firebase;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
@@ -13,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.plutos_seup.tweetags.Data.Nearby_tags;
 import com.plutos_seup.tweetags.Data.Tags;
 import com.plutos_seup.tweetags.Recyclerview.Main_Adapter;
 
@@ -31,9 +33,9 @@ public class Firebase_Client {
     FirebaseAuth mAuth;
     DatabaseReference databaseReference,firebase_s;
 
-    Firebase firebase ;
     ArrayList<Tags> main_datas = new ArrayList<>();
     Main_Adapter adapter;
+    String user_UID;
 
     public Firebase_Client (Context context, String database_url, RecyclerView recyclerView) {
         this.context = context;
@@ -44,12 +46,10 @@ public class Firebase_Client {
 
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
-        String user_UID = user.getUid();
+        user_UID = user.getUid();
 
         firebase_s = databaseReference.child("User").child(user_UID);
 
-        //Firebase.setAndroidContext(context);
-       // firebase = new Firebase(database_url);
 
     }
 
@@ -98,6 +98,7 @@ public class Firebase_Client {
             main_data.setCover_url(ds.getValue(Tags.class).getCover_url());
             main_data.setTag_key(ds.getValue(Tags.class).getTag_key());
             main_data.setTag_date(ds.getValue(Tags.class).getTag_date());
+            main_data.setSub_tag_count(ds.getValue(Tags.class).getSub_tag_count());
 
             main_datas.add(main_data);
         }

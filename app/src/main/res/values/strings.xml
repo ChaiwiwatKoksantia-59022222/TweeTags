@@ -13,5 +13,7 @@
     <string name="title_activity_add">AddActivity</string>
     <string name="title_activity_fake">FakeActivity</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_nearby__tags">Nearby_Tags</string>
+    <string name="title_activity_nearby_tags">NearbyTags</string>
 
 </resources>

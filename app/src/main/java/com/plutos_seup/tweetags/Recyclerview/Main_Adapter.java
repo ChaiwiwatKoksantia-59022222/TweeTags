@@ -11,6 +11,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +26,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.plutos_seup.tweetags.AddActivity;
+import com.plutos_seup.tweetags.Data.Nearby_tags;
 import com.plutos_seup.tweetags.Data.Tags;
 import com.plutos_seup.tweetags.Interface.ItemOnClick;
 import com.plutos_seup.tweetags.MainActivity;
+import com.plutos_seup.tweetags.NearbyTags;
 import com.plutos_seup.tweetags.Picasso.Picasso;
 import com.plutos_seup.tweetags.R;
 import com.twitter.sdk.android.core.models.Card;
@@ -56,7 +59,7 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
     BottomSheetBehavior main_bs_behavior,main_mode_bs_behavior,main_delete_behavior;
     View main_bs_view,main_mode_bs_view,main_delete_view;
 
-    private int position_s,position_w;
+    private int position_s,position_w,sub_po;
 
     public Main_Adapter(Context context, ArrayList<com.plutos_seup.tweetags.Data.Tags> datas) {
 
@@ -85,6 +88,10 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
         final String image = data.get(position).getCover_url();
         String date_check = data.get(position).getTag_key();
         String date_s = data.get(position).getTag_date();
+
+        String ns = data.get(position).getSub_tag_count();
+        String name_y = data.get(position).getTag_name();
+        String key_y = data.get(position).getTag_key();
 
         String year = date_s.substring(0,4);
         String day = date_s.substring(8,10);
@@ -117,7 +124,10 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
             holder.date_card.setVisibility(View.GONE);
             holder.r1.setVisibility(View.VISIBLE);
             holder.r2.setVisibility(View.GONE);
-            holder.tag_name_1.setText(data.get(position).getTag_name());
+            String s = "";
+            s = data.get(position).getSub_tag_count();
+            String count = check_sub(s);
+            holder.tag_name_1.setText(data.get(position).getTag_name()+count);
             holder.cover.setVisibility(View.VISIBLE);
             holder.tag_name_1.setTextColor(Color.parseColor("#dcffffff"));
             Picasso.downloadImage(context,data.get(position).getCover_url(),holder.cover);
@@ -135,12 +145,15 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
 
         }
         else {
+            String s = "";
+            s = data.get(position).getSub_tag_count();
+            String count = check_sub(s);
             holder.image_card.setVisibility(View.GONE);
             holder.text_card.setVisibility(View.VISIBLE);
             holder.date_card.setVisibility(View.GONE);
             holder.r2.setVisibility(View.VISIBLE);
             holder.r1.setVisibility(View.GONE);
-            holder.tag_name_2.setText(data.get(position).getTag_name());
+            holder.tag_name_2.setText(data.get(position).getTag_name()+count);
             holder.tag_name_2.setTextColor(Color.parseColor("#616161"));
             holder.cover.setVisibility(View.GONE);
             holder.image_card.setVisibility(View.GONE);
@@ -152,6 +165,7 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
             public void onClick(View v) {
                 click_s();
                 position_w = position;
+                sub_po = position_w;
             }
         });
 
@@ -160,6 +174,7 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
             public void onClick(View v) {
                 click_s();
                 position_w = position;
+                sub_po = position_w;
             }
         });
 
@@ -325,21 +340,50 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
                 String key = data.get(position_w).getTag_key().toString();
                 String name = data.get(position_w).getTag_name().toString();
                 String date = data.get(position_w).getTag_date().toString();
+                String count = data.get(position_w).getSub_tag_count().toString();
 
                 Intent intent = new Intent(context,AddActivity.class);
                 intent.putExtra("cover",cover);
                 intent.putExtra("key",key);
                 intent.putExtra("name",name);
                 intent.putExtra("date",date);
+                intent.putExtra("count",count);
 
                 int mode = 1;
-                intent.putExtra("mode",mode);
+                intent.putExtra("mode","1");
 
                 context.getApplicationContext().startActivity(intent);
 
                 main_mode_bs_dialog.hide();
             }
         });
+
+        CardView nearby = (CardView)main_bs_view.findViewById(R.id.main_nearby_card);
+        nearby.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String count_u = data.get(sub_po).getSub_tag_count();
+                String name_u = data.get(sub_po).getTag_name();
+                String key_u = data.get(sub_po).getTag_key();
+
+                final String n = name_u;
+                final String k = key_u;
+                final String c = count_u;
+
+                Intent intent = new Intent(context,NearbyTags.class);
+
+                intent.putExtra("name",n);
+                intent.putExtra("key",k);
+                intent.putExtra("count",c);
+
+
+
+                context.getApplicationContext().startActivity(intent);
+                main_bs_dialog.cancel();
+            }
+        });
+
+
 
         CardView main_con = (CardView)main_bs_view.findViewById(R.id.main_card_hashtag_btn_detail);
         main_con.setOnClickListener(new View.OnClickListener() {
@@ -392,6 +436,19 @@ public class Main_Adapter extends RecyclerView.Adapter<Main_holder>{
             }
         });
 
+    }
+
+    private String check_sub(String count){
+        String sub = "";
+        if (count.length()>0){
+            if (count.contentEquals("0") == true){
+                sub = "";
+            }
+            else {
+                sub = " [ "+count + " ]";
+            }
+        }
+        return sub;
     }
 
     private void delete(int n){

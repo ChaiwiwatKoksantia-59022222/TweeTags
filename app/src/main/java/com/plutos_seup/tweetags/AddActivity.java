@@ -25,6 +25,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -42,18 +44,25 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.plutos_seup.tweetags.Data.Nearby_tags;
+import com.plutos_seup.tweetags.Data.Tags;
 import com.plutos_seup.tweetags.Firebase.Firebase_Client_Add;
 import com.plutos_seup.tweetags.Picasso.Picasso;
+import com.plutos_seup.tweetags.Recyclerview.Sub_Adapter;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddActivity extends AppCompatActivity {
@@ -66,19 +75,21 @@ public class AddActivity extends AppCompatActivity {
     private String database_url_user,ar;
 
     private LinearLayout save_btn,gallery_btn,url_btn,layout_btn;
-    private EditText editText_tag_name;
+    private EditText editText_tag_name,edit_sub_tag;
 
     final private int Request_code_permission = 12345;
 
     private ImageView imageView_bg;
     private CardView clear_btn;
 
+    private String main_key;
+
     private static String main_firebase;
 
     private String tag_names = "";
 
     private Button cancel,confirm,clip;
-    private ClipboardManager clipboardManager;
+    private ClipboardManager clipboardManager,clipboardManagers;
 
     String date_demo;
 
@@ -88,6 +99,7 @@ public class AddActivity extends AppCompatActivity {
     String UID = "";
 
     String key = "";
+    int sub_count = 0;
 
     TextView text_size;
     CardView add_clear;
@@ -113,13 +125,21 @@ public class AddActivity extends AppCompatActivity {
     private int mode = -1;
     private String tag_name_s,cover_s,date_s,key_s;
 
+    private ArrayList<String> sub_tag;
+
+    RecyclerView sub_tag_recyclerview;
+
+    int re_sub = 0;
+
     TextView loading_text_dialog;
-    Dialog loading_dialog,text_dialog;
+    Dialog loading_dialog,text_dialog,add_sub_dialog;
     TextView textView_dialog;
-    Button confirm_btn_s,cancel_btn_s;
+    Button confirm_btn_s,cancel_btn_s,add_sub_btn,sub_add_btn,sub_cancel_btn,sub_paste_btn;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageReference = storage.getReferenceFromUrl("gs://tweetags-512a8.appspot.com");
+
+    Sub_Adapter sub_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +147,8 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
 
         bundle = getIntent().getExtras();
-        mode = bundle.getInt("mode");
+        String er = bundle.getString("mode");
+        mode = Integer.parseInt(er);
 
         firebase_client_add = new Firebase_Client_Add();
 
@@ -141,6 +162,7 @@ public class AddActivity extends AppCompatActivity {
 
         text_size = (TextView)findViewById(R.id.add_main_text_size);
 
+        sub_tag = new ArrayList<String>();
 
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -153,16 +175,20 @@ public class AddActivity extends AppCompatActivity {
         url_btn = (LinearLayout)findViewById(R.id.add_hashtag_url_btn);
         editText_tag_name = (EditText)findViewById(R.id.add_hashtag_edittext_name);
 
+        add_sub_btn = (Button)findViewById(R.id.add_sub_hashtag_btn);
+
         layout_btn = (LinearLayout)findViewById(R.id.add_hashtag_layout_btn);
         imageView_bg = (ImageView)findViewById(R.id.image_add_hashtag_card);
         clear_btn = (CardView)findViewById(R.id.add_hashtag_clear_btn);
 
         if (user != null){
 
-
-
-
-
+            add_sub_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    input_sub_dialog();
+                }
+            });
 
             onImageViewClick();
 
@@ -194,6 +220,9 @@ public class AddActivity extends AppCompatActivity {
                         Toast("Please insert hashtag");
                     }
 
+
+
+
                 }
             });
 
@@ -205,12 +234,13 @@ public class AddActivity extends AppCompatActivity {
                 }
             });
 
-            if (mode == 1){
+            if (mode == 1 || mode == 4){
                 toolbar_tv.setText("EDIT TAG");
                 tag_name_s = bundle.getString("name");
                 editText_tag_name.setText(tag_name_s);
                 cover_s = bundle.getString("cover");
-
+                String ty = bundle.getString("count");
+                sub_count = Integer.parseInt(ty);
 
                 if (cover_s.length()>0){
                     Picasso.downloadImage(AddActivity.this,cover_s,imageView_bg);
@@ -221,6 +251,23 @@ public class AddActivity extends AppCompatActivity {
                     image_check =false;
                     image_clear();
                 }
+
+                re_sub = 3;
+                sub_recyclerview(re_sub);
+
+                if (mode == 4){
+                    String si = bundle.getString("sub");
+
+                    String[] t = check_hashtag(si);
+                    String b = t[0];
+                    String a = t[1];
+
+                    if (a.contentEquals("1") == true) {
+                        sub_tag.add(b);
+                    }
+
+                }
+
             }
             else if (mode == 3){
                 toolbar_tv.setText("ADD TAG");
@@ -229,10 +276,13 @@ public class AddActivity extends AppCompatActivity {
                 String action = intent_s.getAction();
                 String type = intent_s.getType();
                 editText_tag_name.setText(rte);
+                re_sub = 2;
+                sub_recyclerview(re_sub);
             }
             else {
-
                 toolbar_tv.setText("ADD TAG");
+                re_sub = 1;
+                sub_recyclerview(re_sub);
 
             }
 
@@ -240,6 +290,138 @@ public class AddActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void sub_recyclerview(int mode){
+        sub_tag_recyclerview = (RecyclerView)findViewById(R.id.add_sub_recyclerview);
+        sub_tag_recyclerview.setVisibility(View.GONE);
+        sub_tag_recyclerview.setLayoutManager(new LinearLayoutManager(AddActivity.this,LinearLayoutManager.VERTICAL,false));
+        sub_tag_recyclerview.setNestedScrollingEnabled(false);
+        sub_tag_recyclerview.setHasFixedSize(true);
+        sub_tag_recyclerview.setItemViewCacheSize(20);
+        sub_tag_recyclerview.setDrawingCacheEnabled(true);
+        sub_tag_recyclerview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        if (mode == 1 || mode == 2){
+            sub_adapter = new Sub_Adapter(AddActivity.this,sub_tag);
+            sub_tag_recyclerview.setAdapter(sub_adapter);
+            sub_adapter.notifyDataSetChanged();
+        }
+        else if (mode == 3) {
+
+            main_key = bundle.getString("key");
+
+            DatabaseReference databaseReference_s = FirebaseDatabase.getInstance().getReference();
+
+            final FirebaseUser user_sub = mAuth.getCurrentUser();
+            String user_UID = user_sub.getUid();
+
+            String sub_key = main_key;
+
+            if (sub_count>0){
+                for (int l = 0 ;l < sub_count; l++){
+                    String position = "Tag_"+String.valueOf(l).toString();
+
+                    final int uy = l;
+
+                    DatabaseReference firebase_sub = databaseReference_s.child("User").child(user_UID)
+                            .child("Tags").child(sub_key).child("Nearby_Tags").child(position).child("name");
+                    firebase_sub.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String s = dataSnapshot.getValue().toString();
+                            sub_tag.add(s);
+
+                            if (uy == (sub_count - 1)){
+                                sub_adapter = new Sub_Adapter(AddActivity.this,sub_tag);
+                                sub_tag_recyclerview.setAdapter(sub_adapter);
+                                sub_adapter.notifyDataSetChanged();
+                                Check_list();
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+                }
+            }
+            else {
+                sub_adapter = new Sub_Adapter(AddActivity.this,sub_tag);
+                sub_tag_recyclerview.setAdapter(sub_adapter);
+                sub_adapter.notifyDataSetChanged();
+                Check_list();
+            }
+
+        }
+    }
+
+    private void input_sub_dialog(){
+        add_sub_dialog = new Dialog(AddActivity.this);
+        add_sub_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        add_sub_dialog.setContentView(R.layout.add_sub_hashtag_dialog);
+        add_sub_dialog.setCancelable(true);
+        add_sub_dialog.show();
+
+        clipboardManagers = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+
+        edit_sub_tag = (EditText)add_sub_dialog.findViewById(R.id.add_sub_input_edittext);
+
+        sub_paste_btn = (Button)add_sub_dialog.findViewById(R.id.add_sub_input_paste_clip);
+        sub_paste_btn.setVisibility(View.GONE);
+        sub_paste_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = "";
+                if (clipboardManagers.hasPrimaryClip()){
+                    ClipData clipData = clipboardManagers.getPrimaryClip();
+                    ClipData.Item item = clipData.getItemAt(0);
+                    text = item.getText().toString();
+                    edit_sub_tag.setText(text);
+                }
+            }
+        });
+
+        sub_add_btn = (Button)add_sub_dialog.findViewById(R.id.add_sub_input_confirm);
+        sub_add_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] data_e = check_hashtag(edit_sub_tag.getText().toString());
+                String tag_u = data_e[0];
+                String tag_c = data_e[1];
+                if (tag_c.contentEquals("1")==true){
+                    sub_tag.add(tag_u);
+                }
+                else {
+                    Toast("Please input hashtag");
+                }
+                add_sub_dialog.cancel();
+                Check_list();
+            }
+        });
+
+        sub_cancel_btn = (Button)add_sub_dialog.findViewById(R.id.add_sub_input_cancel);
+        sub_cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add_sub_dialog.cancel();
+                Check_list();
+            }
+        });
+
+    }
+
+    private void Check_list(){
+
+        if (sub_tag.size()>0){
+            sub_tag_recyclerview.setVisibility(View.VISIBLE);
+        }
+        else {
+            sub_tag_recyclerview.setVisibility(View.GONE);
+        }
     }
 
     private void Input_dialog(){
@@ -335,6 +517,8 @@ public class AddActivity extends AppCompatActivity {
 
             mode_check();
 
+            main_key = key;
+
 
         }
 
@@ -342,13 +526,14 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void mode_check(){
-        if (mode == 1){
+        if (mode == 1 || mode == 4){
             key = bundle.getString("key");
         }
         else {
             key = date_fake + ar;
 
         }
+
     }
 
     @Override
@@ -417,7 +602,7 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
-    private void dialog(String text, String cancel_btn, String confirm_btn){
+    private void dialog(final String text, String cancel_btn, String confirm_btn){
         text_dialog = new Dialog(AddActivity.this);
         text_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         text_dialog.setContentView(R.layout.cancel_dialog);
@@ -441,6 +626,7 @@ public class AddActivity extends AppCompatActivity {
         confirm_btn_s.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                text_dialog.cancel();
                 finish();
             }
         });
@@ -572,7 +758,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void UP(String df){
-        firebase_client_add.saveOnline(tag_names,df,key,UID,date_real,date_demo);
+        firebase_client_add.saveOnline(tag_names,df,key,UID,date_real,date_demo,sub_tag);
         Toast.makeText(AddActivity.this,"Upload Successful",Toast.LENGTH_SHORT).show();
         finish();
 
@@ -678,6 +864,8 @@ public class AddActivity extends AppCompatActivity {
         dialog("Do you want to discard?","CANCEL","DISCARD");
 
     }
+
+
 
     @Override
     public void onBackPressed() {
