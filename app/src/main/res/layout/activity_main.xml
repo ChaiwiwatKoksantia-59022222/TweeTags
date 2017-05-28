@@ -99,6 +99,7 @@
     <include layout="@layout/content_main" />
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/main_load_layout"
         android:background="#ffffff"
         android:layout_width="match_parent"

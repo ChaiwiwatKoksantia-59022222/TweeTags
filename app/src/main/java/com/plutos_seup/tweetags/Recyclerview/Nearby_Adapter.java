@@ -102,6 +102,7 @@ public class Nearby_Adapter extends RecyclerView.Adapter<Nearby_holder> {
                     context.startActivity(Intent.createChooser(intent,"Open with"));
                 }
                 text_dialog.cancel();
+
             }
         });
 

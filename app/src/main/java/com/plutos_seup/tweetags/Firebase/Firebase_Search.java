@@ -37,6 +37,7 @@ public class Firebase_Search {
     ArrayList<String> image_ar = new ArrayList<>();
     ArrayList<String> near = new ArrayList<>();
     ArrayList<String> key = new ArrayList<>();
+    ArrayList<String> date = new ArrayList<>();
 
     String rt,ku;
 
@@ -100,6 +101,7 @@ public class Firebase_Search {
         image_ar.clear();
         near.clear();
         key.clear();
+        date.clear();
 
         for (com.google.firebase.database.DataSnapshot ds : dataSnapshot.getChildren()){
 
@@ -107,6 +109,7 @@ public class Firebase_Search {
             String image = ds.getValue(Tags.class).getCover_url();
             String dot = ds.getValue(Tags.class).getSub_tag_count();
             String keys = ds.getValue(Tags.class).getTag_key();
+            String dates = ds.getValue(Tags.class).getTag_date();
 
             int s = name.indexOf(text);
 
@@ -115,6 +118,7 @@ public class Firebase_Search {
                 image_ar.add(image);
                 near.add(dot);
                 key.add(keys);
+                date.add(dates);
 
                 rt = text;
             }
@@ -124,7 +128,7 @@ public class Firebase_Search {
             ArrayList<String> w = new ArrayList<>();
             w.add(text);
             rt = text;
-            adapter = new Search_Adapter(context,datas,image_ar,near,mode,key,rt,ku);
+            adapter = new Search_Adapter(context,datas,image_ar,near,mode,key,rt,ku,date);
             recyclerView.setAdapter(adapter);
         }
         else {
@@ -132,6 +136,7 @@ public class Firebase_Search {
             datas.clear();
             near.clear();
             key.clear();
+            date.clear();
             if (text.length()==0 || mode.contentEquals("2") == true) {
                 for (com.google.firebase.database.DataSnapshot ds : dataSnapshot.getChildren()){
 
@@ -139,12 +144,14 @@ public class Firebase_Search {
                     String image = ds.getValue(Tags.class).getCover_url();
                     String dot = ds.getValue(Tags.class).getSub_tag_count();
                     String keys = ds.getValue(Tags.class).getTag_key();
+                    String dates = ds.getValue(Tags.class).getTag_date();
 
                     if (name.length()>0){
                         datas.add(name);
                         image_ar.add(image);
                         near.add(dot);
                         key.add(keys);
+                        date.add(dates);
 
                         rt = text;
                     }
@@ -158,6 +165,7 @@ public class Firebase_Search {
                     image_ar.add("");
                     near.add("");
                     key.add("");
+                    date.add("");
                     rt = text;
                 }
                 else {
@@ -165,10 +173,11 @@ public class Firebase_Search {
                     image_ar.clear();
                     near.clear();
                     key.clear();
+                    date.clear();
                 }
             }
 
-            adapter = new Search_Adapter(context,datas,image_ar,near,mode,key,rt,ku);
+            adapter = new Search_Adapter(context,datas,image_ar,near,mode,key,rt,ku,date);
             recyclerView.setAdapter(adapter);
 
         }

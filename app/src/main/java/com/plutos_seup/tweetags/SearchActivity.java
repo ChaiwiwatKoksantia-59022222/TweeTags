@@ -97,10 +97,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private void search(String text,String a){
 
-        Log.e("Y","WER");
-        Log.e("I",text);
-        Log.e("U",a);
-
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
 

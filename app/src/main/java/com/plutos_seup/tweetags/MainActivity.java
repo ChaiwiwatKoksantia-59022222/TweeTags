@@ -296,9 +296,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getV(){
-        Log.e("MENU",String.valueOf(menu_drawer_layout.getVisibility()).toString());
-    }
+
 
     private void Sign_out() {
 
@@ -347,9 +345,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (dialog_mode == 0){
+                    text_dialog.cancel();
                     finish();
                 }
                 else if (dialog_mode == 1){
+                    text_dialog.cancel();
                     Sign_out();
                 }
             }

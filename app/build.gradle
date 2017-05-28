@@ -48,6 +48,7 @@ dependencies {
     }
 
 
+    compile 'com.eightbitlab:supportrenderscriptblur:1.0.0'
 
     compile 'com.android.support.constraint:constraint-layout:1.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0'
