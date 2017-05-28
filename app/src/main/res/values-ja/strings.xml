@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_settings">設定</string>
     <string name="app_name">TweeTags</string>
-    <string name="action_add">追加</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_add">Add</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="email">Email</string>
+    <string name="Email_password">Password</string>
+    <string name="SignIn_twitter">LOG IN WITH TWITTER</string>
+
+    <string name="twitter_consumer_key">IaQS7n1e8PZdc5yOMtR4EoYXf</string>
+    <string name="twitter_consumer_secret">CDvaxC3zQNU73cn3LBl5IkhxB5jDEbSK7FPzvosMQ0eB2gCA4P</string>
+    <string name="title_activity_add">AddActivity</string>
+    <string name="title_activity_fake">FakeActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_nearby__tags">Nearby_Tags</string>
+    <string name="title_activity_nearby_tags">NearbyTags</string>
 </resources>
