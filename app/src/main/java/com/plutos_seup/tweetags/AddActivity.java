@@ -305,7 +305,7 @@ public class AddActivity extends AppCompatActivity {
             sub_adapter = new Sub_Adapter(AddActivity.this,sub_tag);
             sub_tag_recyclerview.setAdapter(sub_adapter);
             sub_adapter.notifyDataSetChanged();
-            Log.e("CH","2");
+
         }
         else if (mode == 3) {
 
@@ -336,7 +336,6 @@ public class AddActivity extends AppCompatActivity {
                                 sub_adapter = new Sub_Adapter(AddActivity.this,sub_tag);
                                 sub_tag_recyclerview.setAdapter(sub_adapter);
                                 sub_adapter.notifyDataSetChanged();
-                                Log.e("CH","3");
                                 Check_list();
                             }
 
@@ -355,7 +354,6 @@ public class AddActivity extends AppCompatActivity {
                 sub_adapter = new Sub_Adapter(AddActivity.this,sub_tag);
                 sub_tag_recyclerview.setAdapter(sub_adapter);
                 sub_adapter.notifyDataSetChanged();
-                Log.e("CH","1");
                 Check_list();
             }
 
