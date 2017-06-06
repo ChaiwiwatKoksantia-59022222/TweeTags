@@ -10,8 +10,6 @@
     android:background="@color/bg_light"
     tools:showIn="@layout/activity_main">
 
-
-
     <android.support.v7.widget.RecyclerView
 
         android:paddingBottom="10dp"

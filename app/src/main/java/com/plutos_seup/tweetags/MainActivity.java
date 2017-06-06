@@ -2,7 +2,9 @@ package com.plutos_seup.tweetags;
 
 import android.animation.Animator;
 import android.app.Dialog;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -35,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur;
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,6 +58,9 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 import com.plutos_seup.tweetags.SunBabyLoadingView;
 
 import java.util.ArrayList;
+
+import eightbitlab.com.blurview.BlurView;
+import eightbitlab.com.blurview.RenderScriptBlur;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -172,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));
 
             recyclerView.setHasFixedSize(true);
-            recyclerView.setItemViewCacheSize(20);
+            recyclerView.setItemViewCacheSize(10000);
             recyclerView.setDrawingCacheEnabled(true);
             recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
